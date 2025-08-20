@@ -9,5 +9,5 @@ export class User {
   age: number;
 
   @Field((type) => Boolean)
-  work?: boolean;
+  work: boolean;
 }
