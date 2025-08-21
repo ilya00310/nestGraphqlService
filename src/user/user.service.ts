@@ -1,17 +1,25 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { PrismaService } from "../database/prisma.service";
+import { User } from "./interfaces/user.interface";
 
 @Injectable()
 export class UserService {
-  constructor() {}
+  constructor(private prismaService: PrismaService) {}
 
   async getUser(id: number) {
-    return { id: 1, age: 25 };
+    return await this.prismaService.user.findUnique({ where: { id } });
   }
 
   async getUsers() {
-    return [
-      { id: 1, age: 25, work: false },
-      { id: 2, age: 45, work: true },
-    ];
+    return await this.prismaService.user.findMany();
+  }
+
+  async createUser(age: number, work: boolean) {
+    return await this.prismaService.user.create({
+      data: {
+        age,
+        work,
+      },
+    });
   }
 }
